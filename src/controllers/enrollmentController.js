@@ -1,4 +1,4 @@
-import { CourseModel } from "../models/CoursesModel.js";
+import { CourseModel } from "../models/coursesMdl.js";
 import { EnrollModel } from "../models/EnrollmentModel.js";
 import { v4 as uuidv4 } from "uuid";
 

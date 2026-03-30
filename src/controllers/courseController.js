@@ -1,6 +1,8 @@
 import path from "path";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { CourseModel } from "../models/CoursesModel.js";
+import { CourseModel } from "../models/coursesMdl.js";
+
+
 
 const createCourse = async (req, res) => {
   try {
