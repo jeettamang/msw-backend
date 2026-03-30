@@ -1,8 +1,8 @@
-import { CourseModel } from "../models/CourseModel.js";
+import { CourseModel } from "../models/CoursesModel.js";
 import { EnrollModel } from "../models/EnrollmentModel.js";
 import { v4 as uuidv4 } from "uuid";
 
- const createEnrollment = async (req, res) => {
+const createEnrollment = async (req, res) => {
   try {
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from "uuid";
     const { address, phone, course } = req.body;
     const userId = req.user.id;
 
-    const courseData = await CourseModel.findById(course)
+    const courseData = await CourseModel.findById(course);
     if (!courseData) {
       return res.status(404).json({ message: "Course not found" });
     }
@@ -37,7 +37,7 @@ import { v4 as uuidv4 } from "uuid";
       course,
       amount: courseData.price,
       transaction_uuid,
-      status: "pending", 
+      status: "pending",
       payment_method: "esewa",
     });
 

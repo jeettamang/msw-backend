@@ -2,7 +2,7 @@ import { InstructorModel } from "../models/instructorModel.js";
 import path from "path";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { comparePass, generateToken, hashedPass } from "../utils/bcrypt.js";
-import { CourseModel } from "../models/courseModel.js";
+import { CourseModel } from "../models/CoursesModel.js";
 
 const createInstructor = async (req, res) => {
   try {
