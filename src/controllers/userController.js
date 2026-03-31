@@ -51,6 +51,9 @@ const registerUser = async (req, res) => {
   }
 };
 const loginUser = async (req, res) => {
+  console.log("User from DB:", user);
+  console.log("Entered password:", password);
+  console.log("Stored hash:", user?.password);
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -68,6 +71,7 @@ const loginUser = async (req, res) => {
         message: "Invalid email or password",
       });
     }
+    console.log("Password match:", isMatch);
     const token = generateToken(user);
     const payload = {
       id: user._id,

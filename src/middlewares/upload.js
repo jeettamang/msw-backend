@@ -1,7 +1,14 @@
 import multer from "multer";
+import fs from "fs";
+
+const uploadDir = "./tmp/users";
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./tmp/users");
+    cb(null, uploadDir);
   },
   filename: function (_, file, cb) {
     const uniqueSuffix = `${Date.now()}-${file.originalname}`;
@@ -9,4 +16,4 @@ const storage = multer.diskStorage({
   },
 });
 
-export const upload = multer({ storage:storage });
+export const upload = multer({ storage: storage });
