@@ -86,14 +86,13 @@ const verifyEsewaPayment = async (req, res) => {
     const enrollment = await EnrollModel.findOne({ transaction_uuid });
 
     if (!enrollment) {
-      // REDIRECT TO LIVE FRONTEND
       return res.redirect("https://msw-frontend.vercel.app/failure");
     }
 
     enrollment.status = "paid";
     await enrollment.save();
 
-    // REDIRECT TO LIVE FRONTEND
+    // Redirect to the LIVE success page
     return res.redirect("https://msw-frontend.vercel.app/success");
   } catch (error) {
     console.error("Verify error:", error);
