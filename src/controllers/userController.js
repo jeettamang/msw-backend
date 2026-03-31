@@ -51,28 +51,33 @@ const registerUser = async (req, res) => {
   }
 };
 const loginUser = async (req, res) => {
-  console.log("User from DB:", user);
-  console.log("Entered password:", password);
-  console.log("Stored hash:", user?.password);
   try {
     const { email, password } = req.body;
+
     if (!email || !password) {
-      return res.status(400).json({
-        message: "Email and password are required",
-      });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
+
     const user = await UserModel.findOne({ email });
+
+    console.log("User found:", user ? "Yes" : "No");
+    console.log("Stored hash:", user?.password);
+
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
+
     const isMatch = comparePass(password, user.password);
+    console.log("Password match result:", isMatch);
+
     if (!isMatch) {
-      return res.status(401).json({
-        message: "Invalid email or password",
-      });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
-    console.log("Password match:", isMatch);
+
     const token = generateToken(user);
+
     const payload = {
       id: user._id,
       name: user.name,
@@ -80,14 +85,17 @@ const loginUser = async (req, res) => {
       role: user.role,
       profile: user.profile,
     };
+
     res.status(200).json({
       message: "User login successfully",
       userData: payload,
       token,
     });
   } catch (error) {
+    console.error("Login Crash Error:", error.message);
     return res.status(500).json({
       message: "Internal server error during login",
+      devError: error.message,
     });
   }
 };
