@@ -53,7 +53,7 @@ const createEnrollment = async (req, res) => {
   }
 };
 
-const verifyEsewaPayment = async (req, res) => {
+/*const verifyEsewaPayment = async (req, res) => {
   try {
     const { data } = req.query;
 
@@ -74,6 +74,28 @@ const verifyEsewaPayment = async (req, res) => {
   } catch (error) {
     console.log("Verify error:", error);
     return res.redirect("http://localhost:5173/failure");
+  }
+};
+*/
+const verifyEsewaPayment = async (req, res) => {
+  try {
+    const { data } = req.query;
+    const decoded = JSON.parse(Buffer.from(data, "base64").toString("utf-8"));
+    const transaction_uuid = decoded.transaction_uuid;
+
+    const enrollment = await EnrollModel.findOne({ transaction_uuid });
+
+    if (!enrollment) {
+      return res.redirect("https://msw-frontend.vercel.app/failure");
+    }
+
+    enrollment.status = "paid";
+    await enrollment.save();
+
+    return res.redirect("https://msw-frontend.vercel.app/success");
+  } catch (error) {
+    console.log("Verify error:", error);
+    return res.redirect("https://msw-frontend.vercel.app/failure");
   }
 };
 const getEnrollments = async (req, res) => {
