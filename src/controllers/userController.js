@@ -62,15 +62,11 @@ const loginUser = async (req, res) => {
 
     const user = await UserModel.findOne({ email });
 
-    console.log("User found:", user ? "Yes" : "No");
-    console.log("Stored hash:", user?.password);
-
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const isMatch = comparePass(password, user.password);
-    console.log("Password match result:", isMatch);
 
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
@@ -86,11 +82,18 @@ const loginUser = async (req, res) => {
       profile: user.profile,
     };
 
-    res.status(200).json({
-      message: "User login successfully",
-      userData: payload,
-      token,
-    });
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
+      .status(200)
+      .json({
+        message: "User login successfully",
+        userData: payload,
+      });
   } catch (error) {
     console.error("Login Crash Error:", error.message);
     return res.status(500).json({

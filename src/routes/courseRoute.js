@@ -2,6 +2,7 @@ import express from "express";
 import {
   createCourse,
   deleteCourseById,
+  editCourse,
   getCourseById,
   getCourses,
 } from "../controllers/courseController.js";
@@ -19,6 +20,12 @@ courseRouter
   )
   .get("/get-all", getCourses)
   .get("/get/:id", getCourseById)
+  .put(
+    "/edit/:id",
+    authMiddleware(["Admin", "Instructor"]),
+    upload.single("image"),
+    editCourse,
+  )
   .delete(
     "/delete/:id",
     authMiddleware(["Admin", "Instructor"]),

@@ -19,5 +19,8 @@ userRouter
   .get("/get-me", authMiddleware(), getMe)
   .get("/get-all", getUsers)
   .put("/edit/:id", editUser)
-  .get("/my-payments", authMiddleware(["Student"]), myPayments);
+  .get("/my-payments", authMiddleware(["Student"]), myPayments)
+  .post("/logout", (req, res) => {
+    res.clearCookie("token").json({ message: "Logged out" });
+  });
 export default userRouter;
